@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <sstream>
+#include "Shape.h"
 
-class Square {
+class Square : public Shape {
   private:
     double side;
-  
+
   public:
     Square() : side(1) {};
 
