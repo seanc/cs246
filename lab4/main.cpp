@@ -45,7 +45,6 @@ bool FindPair(ds::Array<int>& arr, int target) {
 int RemoveAllOccurrences(ds::Array<int>& arr, int target) {
     int removed = 0;
     for (int i = 0; i < arr.Length(); i++) {
-        std::cout << arr[i] << "target" << target << std::endl;
         if (arr[i] == target) {
             removed++;
             for (int j = i; j < arr.Length(); j++) {
