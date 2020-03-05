@@ -50,11 +50,10 @@ ds::Node<T>* MiddleNode(ds::Node<T>* head)
     }
 
     int even = (nodes.Length() % 2) == 0;
-    std::cout << even << std::endl;
     if (even) {
-        middle = nodes[nodes.Length() / 2];
+        middle = nodes[(nodes.Length() - 1 )/ 2];
     } else {
-        middle = nodes[(nodes.Length() - 1) / 2];
+        middle = nodes[(nodes.Length()) / 2];
     }
 
     return middle;
@@ -120,8 +119,14 @@ ds::Node<int>* GenerateList(int n)
 int main()
 {
     srand(time(NULL));
-    ds::Node<int>* line = GenerateList(13);
-    Print(line);
-    std::cout << *MiddleNode(line) << std::endl;
+    ds::Node<int>* oddLengthLine = GenerateList(7);
+    ds::Node<int>* evenLengthLine = GenerateList(6);
+    std::cout << "Odd Length Line: ";
+    Print(oddLengthLine);
+
+    std::cout << "Even Length Line:";
+    Print(evenLengthLine);
+    
+    std::cout << MiddleNode(evenLengthLine)->GetData() << " | " << MiddleNode(oddLengthLine)->GetData() << std::endl;
     return 0; 
 }
