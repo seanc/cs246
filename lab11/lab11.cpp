@@ -40,8 +40,24 @@ bool IsLine(ds::Vector<Point>& coors)
 template<typename T>
 ds::Node<T>* MiddleNode(ds::Node<T>* head)
 {
+    ds::Node<T>* tmp = head;
+    ds::Vector<ds::Node<T>*> nodes;
+    ds::Node<T>* middle;
 
-    return NULL;
+    while (tmp != NULL) {
+        nodes.Insert(tmp);
+        tmp = tmp->GetLink();
+    }
+
+    int even = (nodes.Length() % 2) == 0;
+    std::cout << even << std::endl;
+    if (even) {
+        middle = nodes[nodes.Length() / 2];
+    } else {
+        middle = nodes[(nodes.Length() - 1) / 2];
+    }
+
+    return middle;
 }
 
 /********************************
@@ -103,6 +119,9 @@ ds::Node<int>* GenerateList(int n)
 
 int main()
 {
-    ds::Vector<Point> line;
+    srand(time(NULL));
+    ds::Node<int>* line = GenerateList(13);
+    Print(line);
+    std::cout << *MiddleNode(line) << std::endl;
     return 0; 
 }
