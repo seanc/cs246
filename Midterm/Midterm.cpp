@@ -128,8 +128,28 @@ std::string AdjacentDuplicatesRemoval(std::string str)
 
 int MaxKSum(ds::da::Vector<int>& data,int k)
 {
-    //Rewrite Definition of MaxKSum() Here
-    return 0;
+    if (data.IsEmpty()) return 0;
+
+    if (k < 0 || data.Size() < k) {
+        int sum = 0;
+        for (int i = 0; i < data.Size(); i++) {
+            sum += data[i];
+        }
+        return sum;
+    }
+
+    int subSum = 0;
+    for (int i = 0; i < k; i++) {
+        subSum += data[i];
+    }
+
+    int remSum = subSum;
+    for (int i = k; i < data.Size(); i++) {
+        remSum += data[i] - data[i - k];
+        subSum = subSum > remSum ? subSum : remSum;
+    }
+    
+    return subSum;
 }
 
 int main()
@@ -154,6 +174,11 @@ int main()
     // Question 4
     std::string repetitiveString = RepeatingValues();
     std::cout << repetitiveString << std::endl;
-    std::cout << AdjacentDuplicatesRemoval(repetitiveString) << std::endl;
+    std::cout << AdjacentDuplicatesRemoval(repetitiveString) << std::endl << std::endl;
+    
+    // Question 5
+    ds::da::Vector<int> longList = GenerateLengthyList();
+    std::cout << longList << std::endl;
+    std::cout << MaxKSum(longList, 3) << std::endl;
     return 0;
 }
