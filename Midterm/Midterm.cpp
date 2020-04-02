@@ -37,24 +37,23 @@ int LastOccurrence(ds::da::Vector<T>& data,const T& value)
 template <typename T>
 void BubbleSort(ds::dn::Node<T>* root)
 {
-    ds::dn::Node<T>* tmp;
-    ds::dn::Node<T>* tmp1;
-    bool swapped = false;
+    ds::dn::Node<T>* tmp = root;
+    ds::dn::Node<T>* next;
 
-    while (swapped) {
-        tmp = root;
+    while (tmp && tmp->GetNext()) {
+        next = tmp->GetNext();
 
-        while (tmp->GetNext() != tmp1) {
-            if (tmp->GetData() > tmp->GetNext()->GetData()) {
+        while (next) {
+            if (tmp->GetData() > next->GetData()) {
                 T tmpData = tmp->GetData();
-                tmp->SetData(tmp->GetNext()->GetData());
-                tmp->GetNext()->SetData(tmpData);
+                tmp->SetData(next->GetData());
+                next->SetData(tmpData);
             }
 
-            tmp = tmp->GetNext();
+            next = next->GetNext();
         }
 
-
+        tmp = tmp->GetNext();
     }
     return;
 }
@@ -81,9 +80,15 @@ int MaxKSum(ds::da::Vector<int>& data,int k)
 int main()
 {
     srand(time(NULL));
+
     ds::da::Vector<int> list = GenerateRepeatingList();
     std::cout << list << std::endl;
-    std::cout << LastOccurrence(list, 2);
+    std::cout << LastOccurrence(list, 2) << std::endl << std::endl;
+
+    ds::dn::Node<int>* dnList = GenerateUnsortedList();
+    PrintList(dnList);
+    BubbleSort(dnList);
+    PrintList(dnList);
     //Test Your Functions Here
 
     return 0;
