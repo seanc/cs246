@@ -37,6 +37,7 @@ int LastOccurrence(ds::da::Vector<T>& data,const T& value)
 template <typename T>
 void BubbleSort(ds::dn::Node<T>* root)
 {
+    if (root == NULL) return;
     ds::dn::Node<T>* tmp = root;
     ds::dn::Node<T>* next;
 
@@ -61,7 +62,28 @@ void BubbleSort(ds::dn::Node<T>* root)
 template <typename T>
 bool HasCycle(ds::sn::Node<T>* root)
 {
-    //Rewrite Definition of HasCycle() Here 
+    if (root == NULL) return false;
+
+    ds::sn::Node<T>* tmp = root;
+    ds::sn::Node<T>* tmp1 = root;
+    while (tmp && tmp1 && tmp1->GetLink()) {
+        tmp = tmp->GetLink();
+        tmp1 = tmp1->GetLink()->GetLink();
+
+        if (tmp == tmp1) {
+            return true;
+        }
+    }
+    // while (tmp != prev) {
+    //     // std::cout << tmp->GetData() << " " << prev->GetData();
+    //     if (tmp->GetData() = prev->GetData()) {
+    //         return true;
+    //     } else {
+    //         prev = tmp;
+    //         tmp = tmp->GetLink();
+    //     }
+    // }
+
     return false;
 }
 
@@ -81,15 +103,20 @@ int main()
 {
     srand(time(NULL));
 
+    // Question 1
     ds::da::Vector<int> list = GenerateRepeatingList();
     std::cout << list << std::endl;
     std::cout << LastOccurrence(list, 2) << std::endl << std::endl;
 
+    // Question 2
     ds::dn::Node<int>* dnList = GenerateUnsortedList();
     PrintList(dnList);
     BubbleSort(dnList);
     PrintList(dnList);
-    //Test Your Functions Here
+
+    // Question 3
+    ds::sn::Node<int>* infiniteList = GenerateInfiniteList();
+    std::cout << HasCycle(infiniteList) << std::endl << std::endl; // Always returns true?
 
     return 0;
 }
