@@ -89,8 +89,41 @@ bool HasCycle(ds::sn::Node<T>* root)
 
 std::string AdjacentDuplicatesRemoval(std::string str)
 {
-    //Rewrite Definition of AdjacentDuplicatesRemoval() Here
-    return "";
+	int index = 0;
+	int occurences = 0;
+	int firstOccurenceIndex = 0;
+	char lastLtr;
+    std::string newStr;
+
+	while (index < str.length())
+	{
+		char ltr = str[index];
+		int nextLtrIndex = index + 1;
+
+		if (nextLtrIndex < str.length()) {
+			if (ltr == str[nextLtrIndex] || ltr == lastLtr) {
+				occurences++;
+				lastLtr = str[index];
+
+				if (occurences == 1) {
+					firstOccurenceIndex = index;
+				}
+
+				if (occurences > 1) {
+					// Restart parsing from initial detection of sequence
+					index = firstOccurenceIndex;
+					occurences = 0;
+				}
+			} else {
+				occurences = 0;
+                newStr += str[index];
+			}
+		}
+
+		index++;
+	}
+	
+    return newStr;
 }
 
 int MaxKSum(ds::da::Vector<int>& data,int k)
@@ -118,5 +151,9 @@ int main()
     ds::sn::Node<int>* infiniteList = GenerateInfiniteList();
     std::cout << HasCycle(infiniteList) << std::endl << std::endl; // Always returns true?
 
+    // Question 4
+    std::string repetitiveString = RepeatingValues();
+    std::cout << repetitiveString << std::endl;
+    std::cout << AdjacentDuplicatesRemoval(repetitiveString) << std::endl;
     return 0;
 }
