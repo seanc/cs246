@@ -180,5 +180,7 @@ int main()
     ds::da::Vector<int> longList = GenerateLengthyList();
     std::cout << longList << std::endl;
     std::cout << MaxKSum(longList, 3) << std::endl;
+
+    // HOORAY
     return 0;
 }
