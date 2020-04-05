@@ -72,7 +72,7 @@ bool HasCycle(ds::sn::Node<T> *root)
         return false;
 
     ds::sn::Node<T> *tmp = root;
-    ds::sn::Set<ds::sn::Node<T>*> previousNodes;
+    ds::da::Set<ds::sn::Node<T>*> previousNodes;
 
     while (tmp)
     {
