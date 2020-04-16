@@ -18,9 +18,12 @@ int ToInteger(std::string num)
 	int sum = 0;
 	int sign = num[0] == '-' ? -1 : 1;
 	ds::da::Stack<int> digits;
+ 
+	if (num[0] == '-') {
+		num = num.substr(1, num.length());
+	}
 
 	for (char digit : num) {
-		if (digit == '-' && digits.IsEmpty()) continue;
 		if (digit >= '0' && digit <= '9') {
 			digits.Push(digit - '0');
 		} else {
@@ -98,7 +101,7 @@ int ToInteger(std::string num)
 
 int main()
 {
-	std::cout << ToInteger("012323") << "\n";
+	std::cout << ToInteger("-12323") << "\n";
 	// std::cout << ABStringWithExceptions(7, 10);
 	return 0;
 }

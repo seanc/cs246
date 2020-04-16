@@ -18,10 +18,7 @@
 // template <typename T>
 // void SwapNodes(ds::Node<T>* root,ds::Node<T>* nptr1,ds::Node<T>* nptr2)
 // {
-//     ds::Node<int>* tmp = root;
-//     while (tmp != NULL) {
-
-//     }
+//     ds::Node<int>* tmp = nptr1;
 
 //     return;
 // }
@@ -31,76 +28,44 @@
 //     return 0.0;
 // }
 
-// template <typename T>
-// void RemoveAll(ds::Node<T>* root,const T& target)
-// { 
-//     if (root == NULL) return;
-//     ds::Node<T>* tmp = root;
-//     ds::Node<T>* prev;
-
-//     while (tmp != NULL) {
-//         while (tmp != NULL && tmp->GetData() != target) {
-//             prev = tmp;
-//             tmp = tmp->GetLink();
-//         }
-
-//         if (tmp != NULL) {
-//             prev->SetLink(tmp->GetLink());
-//         }
-        
-//         tmp = prev->GetLink();
-//     }
-
-//     return;
-// }
-
 template <typename T>
-void RemoveAll1(ds::Node<T>* root, const T& target) {
+void RemoveAll(ds::Node<T>*& root, const T& target) {
     if (root == NULL) return;
 
-    ds::Node<T> *tmp = root;
-
-    if (tmp->GetData() == target) {
-        ds::Node<T> *tmp1 = root;
+    if (root->GetData() == target) {
+        ds::Node<T> *remove_ptr = root;
         root = root->GetLink();
-        delete tmp1;
-        tmp1 = NULL;
+        delete remove_ptr;
+        remove_ptr = NULL;
     }
 
-    while (tmp->GetLink() != NULL) {
-        if (tmp->GetLink()->GetData() == target) {
-            tmp->SetLink(tmp->GetLink()->GetLink());
+    ds::Node<T> *tmp = root;
+    ds::Node<T> *prev = root;
+
+    while (tmp != NULL) {
+        if (tmp->GetData() == target) {
+            if (prev != NULL) {
+                prev->SetLink(tmp->GetLink());
+            } else {
+                prev = tmp->GetLink();
+                tmp = prev->GetLink();
+            }
         } else {
+            prev = tmp;
             tmp = tmp->GetLink();
         }
     }
 
+    // while (tmp->GetLink() != NULL) {
+    //     if (tmp->GetLink()->GetData() == target) {
+    //         tmp->SetLink(tmp->GetLink()->GetLink());
+    //     } else {
+    //         tmp = tmp->GetLink();
+    //     }
+    // }
+
     return;
 }
-
-// template <typename T>
-// void RemoveAll2(ds::Node<T>* root, const T& target) {
-//     ds::Node<T>* tmp = root;
-//     if (tmp == NULL) return;
-
-//     while (tmp->GetData() == target) {
-//         tmp = tmp->GetLink();
-//         if (tmp == NULL) return;
-//     }
-
-//     ds::Node<T>* prev = tmp;
-//     while (tmp != NULL) {
-//         if (tmp->GetLink()->GetData() == target) {
-//             prev->SetLink(tmp->GetLink());
-//             tmp = prev->GetLink();
-//         } else {
-//             prev = prev->GetLink();
-//             tmp = prev->GetLink();
-//         }
-//     }
-
-//     return;
-// }
 
 template <class T>
 void Print(ds::Node<T>* root)
@@ -135,16 +100,15 @@ int main()
         tmp = new ds::Node<int>(value, node);
         node = tmp;
     }
-    delete tmp;
-    tmp = NULL;
 
     Print(node);
     std::cout << std::endl;
-    RemoveAll1(node, 1);
-    std::cout << std::endl;
-    RemoveAll1(node, 3);
-    std::cout << std::endl;
+    RemoveAll(node, 1);
     Print(node);
+    std::cout << std::endl;
+    // RemoveAll(node, 3);
+    // Print(node);
+    // std::cout << std::endl;
 
     return 0; 
 }
