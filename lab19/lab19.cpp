@@ -39,8 +39,8 @@ V& Get(Map<K,V>& map,const K& key)
 		idx++;
 	}
 
-	if (idx == map.size && map.size < 100) {
-		return map.values[map.size];
+	if (idx < map.size) {
+		return map.values[idx];
 	} else {
 		throw "Key Does Not Exists";
 	}
@@ -54,7 +54,7 @@ bool Contains(Map<K,V>& map,const K& key)
 		idx++;
 	}
 
-	return idx == map.size && map.size < 100;
+	return idx < map.size;
 }
 
 template<class K,class V>
@@ -65,7 +65,7 @@ void Remove(Map<K,V>& map,const K& key)
 		idx++;
 	}
 
-	if (idx != map.size) {
+	if (idx < map.size) {
 		map.size -= 1;
 		for (int i = idx; i < map.size; i++) {
 			map.keys[i] = map.keys[i + 1];
@@ -95,6 +95,7 @@ int main()
 	Print(map);
 
 	Map<int, int> numMap;
+	Initialize(numMap);
 	for (int i = 0; i < 20; i++) {
 		Put(numMap, i, i + 1);
 	}
@@ -103,5 +104,8 @@ int main()
 		Remove(numMap, i);
 	}
 	Print(numMap);
+
+	std::cout << Contains(numMap, 0) << "\n";
+	std::cout << Get(numMap, 1) << "\n";
 	return 0;
 }
