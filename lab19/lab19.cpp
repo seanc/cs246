@@ -55,7 +55,6 @@ bool Contains(Map<K,V>& map,const K& key)
 	}
 
 	return idx == map.size && map.size < 100;
-	return false;
 }
 
 template<class K,class V>
