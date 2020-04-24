@@ -89,7 +89,7 @@ int main()
 {
     srand(time(NULL));
 
-    std::cout << ToTernary(6);
+    std::cout << ToTernary(3);
     
     return 0; 
 }

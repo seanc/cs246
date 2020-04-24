@@ -34,7 +34,7 @@ ds::sn::Set<int> MaximumCongruenceClass(ds::da::Vector<int>& data,int m)
 	ds::sn::Set<int> longestSubset;
 
 	if (m < 0) {
-		return ds::sn::Set<int>();
+		return longestSubset;
 	}
 
 	for (int i = 0; i < data.Size(); i++) { 
