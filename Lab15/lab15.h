@@ -21,69 +21,75 @@ private:
     void Resize(int ncp) {
         if(ncp <= 0)
         {
-            ncp = 2 * capacity;
+            ncp = capacity * 2;
         }
 
-        int tcp = (ncp > capacity)?(ncp):(capacity);
+        int tcp = (capacity < ncp)?(capacity):(ncp);
         T* tmp = new T[tcp];
 
-        for(int i = 0;i < tcp;i += 1)
+        for(int i = 0;i < tcp - 1;i += 1)
         {
-            tmp[i] = data[i];
+            tmp[i] = data[(front + i) % capacity];
         }
-        delete[] data;
-        data = new T[ncp];
-        capacity = ncp;
 
-        for(int i = 0;i < tcp;i += 1)
+        front = 0;
+        back = capacity - 1;
+        capacity = ncp;
+        delete[] data;
+        data = new T[capacity];
+
+        for(int i = 0;i < tcp - 1;i += 1)
         {
             data[i] = tmp[i];
         }
         delete[] tmp;
-
     }
 
 public:
     MyStack() : MyStack(10) {};
     //Initialize your stack
-    MyStack(int capacity) : capacity(10), front(0) {
+    MyStack(int capacity) : capacity(capacity), front(0), back(0) {
         data = new T[capacity];
+    }
+
+    ~MyStack() {
+        delete[] data;
     }
 
     //adds element to the stack
     void Push(const T& value) {
-        if (front == capacity) {
+        if ((back + 1) % capacity == front) {
             Resize(2 * capacity);
         }
 
-        data[front] = value;
-        front++;
+        data[back] = value;
+        back = (back + 1) % capacity;
     }
 
     //removes top element from the stack        
     void Pop() {
-        if (front > 0) {
-            front--;
+        if (back != front) {
+            back = (back - 1) % capacity;
         }
     }
 
     //retrieves but does not remove the top element of the stack 
     const T& Top() const {
-        if (front == 0) {
+        if (back == front) {
             throw "Empty stack";
         }
-        return data[front - 1];
+        return data[back - 1];
     }
 
     //states if the stack is empty
     bool IsEmpty() const {
-        return front == 0;
+        return back == front;
     }
 
     void Print() {
         std::cout << "[";
-        for (int i = 0; i < front; i++) {
-            std::cout << data[i] << ((i + 1 < front) ? ", " : "");
+        for (int i = 0; i < back; i++) {
+            std::cout << data[i] << ((i + 1 < back) ? ", " : "");
         }
         std::cout << "]\n";
     }
@@ -104,6 +110,10 @@ public:
 
     MyQueue(int capacity) : capacity(capacity), size(0) {
         data = new T[capacity];
+    }
+
+    ~MyQueue() {
+        delete[] data;
     }
 
     void Resize(int ncp)
