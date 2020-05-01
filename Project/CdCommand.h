@@ -7,14 +7,10 @@
 namespace shell {
   class CdCommand : public Command {
     public:
-      CdCommand() : Command() {
-        this->command = "cd";
-        this->help = "[ . | .. | path ]";
-        this->args = args;
-      }
+      CdCommand() : Command("cd", "[ . | .. | path ]", 2) {}
 
-      bool Execute (ds::da::Vector<char>* signature) {
-
+      bool Execute (ds::da::Vector<std::string> args) {
+        std::cout << "it worked!" << args << "\n";
       }
   };
 }

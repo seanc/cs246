@@ -10,12 +10,20 @@ namespace shell {
     protected:
       std::string command;
       std::string help;
-      int args;
+      int args; // 0 = no args, -1 = infinite args
     public:
-      virtual bool Execute(ds::da::Vector<char>* signature) = 0;
-      virtual std::string GetCommand() const = 0; 
-      virtual std::string GetHelp() const = 0;
-      virtual int GetRequiredArgs() const = 0;
+      Command(std::string command, std::string help, int args) : command(command), help(help), args(args) {}
+
+      virtual bool Execute(ds::da::Vector<std::string> signature) = 0;
+      virtual const std::string GetCommand() {
+        return command;
+      }
+      virtual const std::string GetHelp() {
+        return help;
+      }
+      const int GetRequiredArgs() {
+        return args;
+      };
   };
 }
 
