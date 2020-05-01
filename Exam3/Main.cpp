@@ -74,7 +74,20 @@ bool RookMove(ds::da::Vector<int>& bd,Point& s,Point& e)
 
 bool IsValidParentheses(std::string str)
 {
-	return false;
+	int leftCount = 0;
+	int rightCount = 0;
+
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] == '(') {
+			leftCount++;
+		}
+
+		if (str[i] == ')') {
+			rightCount++;
+		}
+	}
+
+	return leftCount == rightCount;
 }
 
 //Question 4
@@ -93,8 +106,20 @@ void Swap(ds::dn::Node<T>* a,ds::dn::Node<T>* b)
 template <typename T>
 void InsertionSort(ds::dn::Node<T>* root)
 {
-	
-	return;
+	// ds::dn::Node<T>* tmp;
+	// ds::dn::Node<T>* tmp1;
+	// while (tmp->GetNext() != NULL) {
+	// 	tmp1 = tmp;
+	// 	while (tmp1->GetPrev() != NULL && tmp1->GetData() < tmp1->GetPrev()->GetData()) {
+	// 		// tmp1->SetData(tmp1->GetPrev()->GetData());
+	// 		// tmp1 = tmp1->GetPrev();
+	// 		Swap(tmp1, tmp1->GetPrev());
+	// 		tmp1 = tmp1->GetPrev();
+	// 	}
+
+	// 	tmp1->SetData(tmp1->GetData());
+	// 	tmp = tmp->GetNext();
+	// }
 }
 
 //Question 5
@@ -102,17 +127,89 @@ void InsertionSort(ds::dn::Node<T>* root)
 template <typename T>
 bool IsProperSubSet(ds::da::Set<T>& A,ds::da::Set<T>& B)
 {
+	if (A.Size() >= B.Size()) {
+		return false;
+	}
+
+	ds::da::Iterator<int>* it = A.ToIterator();
+	int i = 0;
+	while (it->HasNext()) {
+		int data = it->Next();
+		if (!B.Contains(data)) {
+			return false;
+		}
+	}
+
+	if (i < B.Size()) {
+		return true;
+	}
+
 	return false;
+}
+
+ds::dn::Node<int>* GenerateList(int n)
+{
+    int nc = (n <= 0)?(10):(n);
+    ds::dn::Node<int>* root = new ds::dn::Node<int>(rand() % 99 + 1);
+    ds::dn::Node<int>* tmp = root;
+    for(int i = 1;i < nc;i += 1)
+    {
+        tmp->SetNext(new ds::dn::Node<int>(rand() % 99 + 1));
+        tmp->GetNext()->SetPrev(tmp);
+        tmp = tmp->GetNext();
+    }
+
+    return root;
+}
+
+ds::da::Set<int> GenerateSet(int n)
+{
+    int s = (n <= 0)?(10):(n);
+    ds::da::Set<int> S;
+
+    while(S.Size() < s)
+    {
+        S.Insert((rand() % 1000 + 1));
+    }
+    return S;
+} 
+
+template<typename T>
+void PrintList(ds::dn::Node<T>* list) {
+	std::cout << "[";
+	while (list != NULL) {
+		std::cout << list->GetData() << (list->GetNext() ? ", " : "");
+		list = list->GetNext();
+	}
+	std::cout << "]\n";
 }
 
 int main()
 {
+	srand(time(NULL));
+	// Question 1
 	int nums[] = { 7,2,4,3,2,8,3,9,3,2,9,4,2,5,3 };
 	int numsSize = sizeof(nums) / sizeof(int);
 	ds::da::Vector<int> data;
 	for (int i = 0; i < numsSize; i++) {
 		data.Insert(nums[i]);
 	}
-	std::cout << BoundMode(data, 9) << "\n";
+	std::cout << "Bound Mode: " << BoundMode(data, 9) << "\n";
+
+	// Question 3
+	std::cout << "Valid Parens: " << IsValidParentheses("(()f)oo(") << "\n";
+
+	// Question 4
+	// ds::dn::Node<int>* list = GenerateList(5);
+	// PrintList(list);
+	// InsertionSort(list);
+	// PrintList(list);
+
+	// Question 5
+	ds::da::Set<int> A = GenerateSet(5);
+	ds::da::Set<int> B = A;
+	B.Insert(10);
+	std::cout << "Proper Subset: " << IsProperSubSet(A, B) << "\n";
+
 	return 0;
 }
