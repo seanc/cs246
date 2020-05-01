@@ -80,20 +80,6 @@ bool IsValidParentheses(std::string str)
 
 	ds::da::Stack<char> parens;
 
-	// for (char l : str) {
-	// 	if (l == '(') {
-	// 		parens.Push(l);
-	// 	} else if (l == ')') {
-	// 		if (!parens.IsEmpty() && (parens.Top() == ')') && l != ')') {
-	// 			return false;
-	// 		}
-
-	// 		if (!parens.IsEmpty()) {
-	// 			parens.Pop();
-	// 		}
-	// 	}
-	// }
-
 	for (char l : str) {
 		if (l == '(') {
 			parens.Push('(');
@@ -124,7 +110,20 @@ void Swap(ds::dn::Node<T>* a,ds::dn::Node<T>* b)
 template <typename T>
 void InsertionSort(ds::dn::Node<T>* root)
 {
+	ds::dn::Node<T>* tmp = root;
 
+	if (tmp != NULL && tmp->GetNext() != NULL) {
+		while (tmp != NULL) {
+			ds::dn::Node<T>* tmp1 = tmp->GetNext();
+			while (tmp1 != NULL) {
+				if (tmp1->GetData() < tmp->GetData()) {
+					Swap(tmp1, tmp);
+				}
+				tmp1 = tmp1->GetNext();
+			}
+			tmp = tmp->GetNext();
+		}
+	}
 }
 
 //Question 5
@@ -203,6 +202,12 @@ int main()
 
 	// Question 3
 	std::cout << "Valid Parens: " << IsValidParentheses("()()") << "\n";
+
+	// Question 4
+	ds::dn::Node<int>* list = GenerateList(5);
+	PrintList(list);
+	InsertionSort(list);
+	PrintList(list);
 
 	// Question 5
 	ds::da::Set<int> A = GenerateSet(5);
