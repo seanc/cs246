@@ -74,20 +74,38 @@ bool RookMove(ds::da::Vector<int>& bd,Point& s,Point& e)
 
 bool IsValidParentheses(std::string str)
 {
-	int leftCount = 0;
-	int rightCount = 0;
+	if (str.length() == 0) {
+		return true;
+	}
 
-	for (int i = 0; i < str.length(); i++) {
-		if (str[i] == '(') {
-			leftCount++;
-		}
+	ds::da::Stack<char> parens;
 
-		if (str[i] == ')') {
-			rightCount++;
+	// for (char l : str) {
+	// 	if (l == '(') {
+	// 		parens.Push(l);
+	// 	} else if (l == ')') {
+	// 		if (!parens.IsEmpty() && (parens.Top() == ')') && l != ')') {
+	// 			return false;
+	// 		}
+
+	// 		if (!parens.IsEmpty()) {
+	// 			parens.Pop();
+	// 		}
+	// 	}
+	// }
+
+	for (char l : str) {
+		if (l == '(') {
+			parens.Push('(');
+		} else if (!parens.IsEmpty()) {
+			if (l == parens.Top()) {
+				return false;
+			}
+			parens.Pop();
 		}
 	}
 
-	return leftCount == rightCount;
+	return parens.IsEmpty();
 }
 
 //Question 4
@@ -106,20 +124,7 @@ void Swap(ds::dn::Node<T>* a,ds::dn::Node<T>* b)
 template <typename T>
 void InsertionSort(ds::dn::Node<T>* root)
 {
-	// ds::dn::Node<T>* tmp;
-	// ds::dn::Node<T>* tmp1;
-	// while (tmp->GetNext() != NULL) {
-	// 	tmp1 = tmp;
-	// 	while (tmp1->GetPrev() != NULL && tmp1->GetData() < tmp1->GetPrev()->GetData()) {
-	// 		// tmp1->SetData(tmp1->GetPrev()->GetData());
-	// 		// tmp1 = tmp1->GetPrev();
-	// 		Swap(tmp1, tmp1->GetPrev());
-	// 		tmp1 = tmp1->GetPrev();
-	// 	}
 
-	// 	tmp1->SetData(tmp1->GetData());
-	// 	tmp = tmp->GetNext();
-	// }
 }
 
 //Question 5
@@ -197,13 +202,7 @@ int main()
 	std::cout << "Bound Mode: " << BoundMode(data, 9) << "\n";
 
 	// Question 3
-	std::cout << "Valid Parens: " << IsValidParentheses("(()f)oo(") << "\n";
-
-	// Question 4
-	// ds::dn::Node<int>* list = GenerateList(5);
-	// PrintList(list);
-	// InsertionSort(list);
-	// PrintList(list);
+	std::cout << "Valid Parens: " << IsValidParentheses("()()") << "\n";
 
 	// Question 5
 	ds::da::Set<int> A = GenerateSet(5);
