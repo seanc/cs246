@@ -85,7 +85,7 @@ int main()
 	std::cout << "\nmax: " << max->data << "\n";
 
 	ds::dn::BNode<int>* target = ds::dn::BSTSearch(tree, 8);
-	ds::dn::BNode<int>* successor = TreeSuccessor(target);
+	ds::dn::BNode<int>* successor = TreePredecessor(target);
 	std::cout << target->data << "\n";
 	std::cout << (successor != NULL ? std::to_string(successor->data) : " ");
 	return 0;
