@@ -15,13 +15,13 @@ namespace shell {
       Command(std::string command, std::string help, int args) : command(command), help(help), args(args) {}
 
       virtual bool Execute(ds::da::Vector<std::string> signature) = 0;
-      virtual const std::string GetCommand() {
+      virtual const std::string GetCommand() const {
         return command;
       }
-      virtual const std::string GetHelp() {
+      virtual const std::string GetHelp() const {
         return help;
       }
-      const int GetRequiredArgs() {
+      const int GetRequiredArgs() const {
         return args;
       };
   };

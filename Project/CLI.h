@@ -35,10 +35,10 @@ namespace shell {
           if (commands.Contains(args[0])) {
             shell::Command* command = commands.Get(args[0]);
             if (args.Size() == command->GetRequiredArgs() + 1) {
-
+              command->Execute(args);
             } else {
               std::cerr << command->GetCommand() << ": incorrect usage" << "\n";
-              std::cerr << "Correct Usage: " << command ->GetCommand() << " " << command->GetHelp() << "\n";
+              std::cerr << "Correct Usage: " << command->GetCommand() << " " << command->GetHelp() << "\n";
             }
           } else {
             std::cerr << "Unknown Command: " << args[0] << "\n";
