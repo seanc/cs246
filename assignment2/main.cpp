@@ -1,100 +1,66 @@
 #include "Node.h"
+#include "Stack.h"
+#include "Editor.h"
+
 template<typename T>
 void PrintList (ds::sn::Node<T>* list) {
-  ds::sn::Node<T>* tmp;
-  tmp = list;
+  ds::sn::Node<T>* tmp = list;
   std::cout << "[";
   while (tmp != NULL) {
-    std::cout << tmp->GetData();
+    std::cout << tmp->GetData() << (tmp->GetLink() != NULL ? " " : "");
     tmp = tmp->GetLink();
   }
   std::cout << "]\n";
 }
 
-ds::sn::Node<int>* ReverseCopy(ds::sn::Node<int>* root)
-{
-    // ds::Node<T>* rootCopy = root;
-    if (root == NULL) {
-        return NULL;
-    }
-
-    if (root->GetLink() == NULL) {
-        return root;
-    }
-
-    ds::sn::Node<int>* tmp = root;
-    ds::sn::Node<int>* prev;
-    ds::sn::Node<int>* next;
-
-    while (tmp != NULL) {
-        next = tmp->GetLink();
-        tmp->SetLink(prev);
-        prev = tmp;
-        tmp = next;
-    }
-    
-    return prev;
-}
-
+// Question 1
 ds::sn::Node<int>* Sum(ds::sn::Node<int>* oper1, ds::sn::Node<int>* oper2) {
-  ds::sn::Node<int>* sumList;
-  ds::sn::Node<int>* prev;
-  ds::sn::Node<int>* oper1Reverse = ReverseCopy(oper1);
-  // ds::sn::Node<int>* oper2Reverse = ReverseCopy(oper2);
-  int remainder;
+  ds::sn::Node<int>* sum = NULL;
+  ds::sn::Node<int>* oper1Tmp = oper1, *oper2Tmp = oper2, *sumTmp = sum;
+  int remainder = 0;
 
-  // PrintList(oper1Reverse);
-  prev = oper1;
-  while (prev != NULL) {
-    std::cout << prev->GetData() << " ";
-    prev = prev->GetLink();
+  while (oper1Tmp != NULL || oper2Tmp != NULL) {
+    int digitSum = 0;
+    if (oper1Tmp != NULL) {
+      digitSum += oper1Tmp->GetData();
+      oper1Tmp = oper1Tmp->GetLink();
+    }
+
+    if (oper2Tmp != NULL) {
+      digitSum += oper2Tmp->GetData();
+      oper2Tmp = oper2Tmp->GetLink();
+    }
+
+    if (remainder > 0) {
+      digitSum += remainder;
+      remainder = 0;
+    }
+
+    if (digitSum >= 10) {
+      remainder = digitSum / 10;
+      digitSum %= 10;
+    }
+
+    if (sum == NULL) {
+      sum = new ds::sn::Node<int>(digitSum);
+      sumTmp = sum;
+    } else {
+      sumTmp->SetLink(new ds::sn::Node<int>(digitSum));
+      sumTmp = sumTmp->GetLink();
+    }
   }
 
-  // while (oper1Reverse != NULL || oper2Reverse != NULL) {
-  //   int sum = 0;
-  //   if (oper2Reverse != NULL) {
-  //     sum += oper2Reverse->GetData();
-  //     oper2Reverse = oper2Reverse->GetLink();
-  //   }
-
-  //   if (oper1Reverse != NULL) {
-  //     sum += oper1Reverse->GetData();
-  //     oper1Reverse = oper1Reverse->GetLink();
-  //   }
-
-  //   if (remainder > 0) {
-  //     sum += remainder;
-  //     remainder = 0;
-  //   }
-
-  //   if (sum > 10) {
-  //     remainder = sum % 10;
-  //     sum /= 10;
-  //   }
-
-  //   if (sumList->GetLink() == NULL) {
-  //     sumList->SetData(sum);
-  //     prev = sumList;
-  //   } else {
-  //     ds::sn::Node<int>* digitSum = new ds::sn::Node<int>(sum);
-  //     prev->SetLink(digitSum);
-  //     prev = digitSum;
-  //   }
-  // }
-
-  return sumList;
+  return sum;
 }
 
-
-
-ds::sn::Node<int> GenerateListFromNumber(int num) {
-  ds::sn::Node<int> list;
-  list.SetData(num % 10);
+template<typename T>
+ds::sn::Node<T>* NumberToIntegerList(T num) {
+  ds::sn::Node<T>* list = new ds::sn::Node<T>(num % 10);
   num /= 10;
   
-  ds::sn::Node<int>* prev = &list;
+  ds::sn::Node<T>* prev = list;
   while (num > 0) {
-    ds::sn::Node<int>* tmp = new ds::sn::Node<int>(num % 10);
+    ds::sn::Node<T>* tmp = new ds::sn::Node<T>(num % 10);
     prev->SetLink(tmp);
     prev = tmp;
     num /= 10;
@@ -103,14 +69,29 @@ ds::sn::Node<int> GenerateListFromNumber(int num) {
   return list;
 }
 
+
 int main() {
-  ds::sn::Node<int>* oper1 = GenerateListFromNumber(643);
-  ds::sn::Node<int>* oper2 = GenerateListFromNumber(81);
-
-  // PrintList(oper1);
-
+  ds::sn::Node<int>* oper1 = NumberToIntegerList(643);
+  ds::sn::Node<int>* oper2 = NumberToIntegerList(81);
   ds::sn::Node<int>* sum = Sum(oper1, oper2);
+  PrintList(sum);
+  
+  oper1 = NumberToIntegerList(100);
+  oper2 = NumberToIntegerList(20);
+  sum = Sum(oper1, oper2);
+  PrintList(sum);
 
-  // PrintList(sum);
+  Editor editor;
+  editor.Read('F');
+  editor.Read('o');
+  editor.Read('o');
+  std::cout << editor.Write();
+  editor.Read('B');
+  editor.Read('a');
+  editor.Read('r');
+  editor.Read('s');
+  editor.Read('#');
+  std::cout << editor.Write() << "\n";
+
   return 0;
 }
