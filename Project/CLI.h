@@ -8,6 +8,10 @@
 #include "Map.h"
 #include "Command.h"
 #include "CdCommand.h"
+#include "LsCommand.h"
+#include "TouchCommand.h"
+#include "MkdirCommand.h"
+#include "RmCommand.h"
 
 namespace shell {
 
@@ -18,6 +22,10 @@ namespace shell {
       CLI() {
         ds::da::Map<std::string, shell::Command*> commands;
         commands.Put("cd", new shell::CdCommand());
+        commands.Put("ls", new shell::LsCommand());
+        commands.Put("touch", new shell::TouchCommand());
+        commands.Put("mkdir", new shell::MkdirCommand());
+        commands.Put("rm", new shell::RmCommand());
         this->commands = commands;
       }
 
@@ -34,8 +42,14 @@ namespace shell {
         if (args.Size() > 0) {
           if (commands.Contains(args[0])) {
             shell::Command* command = commands.Get(args[0]);
-            if (args.Size() == command->GetRequiredArgs() + 1) {
-              command->Execute(args);
+            args.RemoveFirst();
+
+            if ((args.Size() == command->GetRequiredArgs()) || command->GetRequiredArgs() == -1) {
+              bool executed = command->Execute(args);
+              if (!executed) {
+                std::cerr << command->GetCommand() << ": incorrect usage" << "\n";
+                std::cerr << "Correct Usage: " << command->GetCommand() << " " << command->GetHelp() << "\n";
+              }
             } else {
               std::cerr << command->GetCommand() << ": incorrect usage" << "\n";
               std::cerr << "Correct Usage: " << command->GetCommand() << " " << command->GetHelp() << "\n";
