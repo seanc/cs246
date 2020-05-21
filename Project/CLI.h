@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "List.h"
+#include "Filesystem.h"
 #include "Helper.h"
 #include "Map.h"
 #include "Command.h"
@@ -18,13 +19,14 @@ namespace shell {
   class CLI {
     private:
       ds::da::Map<std::string, shell::Command*> commands;
+      Filesystem fs;
     public:
       CLI() {
         ds::da::Map<std::string, shell::Command*> commands;
         commands.Put("cd", new shell::CdCommand());
-        commands.Put("ls", new shell::LsCommand());
-        commands.Put("touch", new shell::TouchCommand());
-        commands.Put("mkdir", new shell::MkdirCommand());
+        commands.Put("ls", new shell::LsCommand(&this->fs));
+        commands.Put("touch", new shell::TouchCommand(&this->fs));
+        commands.Put("mkdir", new shell::MkdirCommand(&this->fs));
         commands.Put("rm", new shell::RmCommand());
         this->commands = commands;
       }
@@ -38,7 +40,7 @@ namespace shell {
         return SplitString(trim(entry), ' ');
       }
 
-      bool Evaluate(ds::da::Vector<std::string> args) {
+      void Evaluate(ds::da::Vector<std::string> args) {
         if (args.Size() > 0) {
           if (commands.Contains(args[0])) {
             shell::Command* command = commands.Get(args[0]);

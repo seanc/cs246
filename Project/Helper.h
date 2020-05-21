@@ -38,5 +38,12 @@ std::string& trim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
   return ltrim(rtrim(str, chars), chars);
 }
 
+int CountChar(char ltr, std::string str) {
+  int count = 0;
+  for (char _ltr : str) {
+    if (_ltr == ltr) count++;
+  }
+  return count;
+}
 
 #endif

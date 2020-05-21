@@ -3,14 +3,24 @@
 
 #include <iostream>
 #include "Command.h"
+#include "Filesystem.h"
 
 namespace shell {
   class LsCommand : public Command {
+    private:
+      Filesystem *fs;
     public:
-      LsCommand() : Command("ls", "[ . | .. | path ]", -1) {}
+      LsCommand(Filesystem* fs) : Command("ls", "[ . | .. | path ]", -1) {
+        this->fs = fs;
+      }
 
       bool Execute (ds::da::Vector<std::string> args) {
-        std::cout << "Directory contents: " << "\n";
+        TreeItem* tmp = this->fs->GetFilesystem()->first_child;
+
+        while (tmp != NULL) {
+          std::cout << tmp->value << " " << (tmp->is_directory ? "+" : "") << "\n";
+          tmp = tmp->next_sibling;
+        }
         return true;
       }
   };
