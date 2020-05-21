@@ -16,9 +16,9 @@ using namespace ds;
 
 
 template <typename T>
-void Print(ds::Node<T>* root)
+void Print(sn::Node<T>* root)
 {
-    ds::sn::Iterator<T>* iter = new ds::sn::Iterator<T>(root);
+    ds::sn::Iterator<T>* iter = new sn::Iterator<T>(root);
 
     while(iter->HasNext())
     {
@@ -102,7 +102,7 @@ bool IsValidWord(std::string wrd)
 
 //Question 4
 /******************************************************************************************
-InFix: 
+InFix: 2, 40, 13, 23, 11, 39, 38, 47, 36, 26, 5, 3, 43, 21, 14
 
 Postfix:
  
@@ -110,13 +110,6 @@ Prefix:
 
 ******************************************************************************************/
 
-
-template<typename T>
-void PrintList (ds::sn::Node<T>*& list) {
-  std::cout << "[";
-
-  std::cout << "]\n";
-}
 
 int main()
 {
@@ -134,7 +127,6 @@ int main()
 	b.SetLink(new sn::Node<int>(4));
 	b.GetLink()->SetLink(new sn::Node<int>(6));
 
-	sn::Node<int>* c = MergeSortedLists(&a, &b);
-	Print(c);
+	MergeSortedLists(&a, &b);
 	return 0;
 }
